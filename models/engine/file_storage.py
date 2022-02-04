@@ -70,7 +70,6 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        """ Method returns the object based on the class and its ID """
         try:
             cls_name = str(cls).split('.')[-1]
             cls_name = cls_name.split("'>")[0]
@@ -83,7 +82,6 @@ class FileStorage:
         return None
 
     def count(self, cls=None):
-        """ returns number of objects in storage matching the given class """
         count = 0
         if cls is None:
             return len(self.__objects)

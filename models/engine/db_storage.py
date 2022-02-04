@@ -76,6 +76,7 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
+        """Method returns the object based on the class and its ID"""
         try:
             cls_name = str(cls).split('.')[-1]
             cls_name = cls_name.split("'>")[0]

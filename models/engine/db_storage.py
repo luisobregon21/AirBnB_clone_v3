@@ -85,7 +85,8 @@ class DBStorage:
             return None
 
         if key in self.all().keys():
-            return self.all().[key]
+            first = self.all()
+            return first[key]
         return None
 
     def count(self, cls=None):

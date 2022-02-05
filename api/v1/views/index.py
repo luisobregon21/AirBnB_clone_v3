@@ -23,4 +23,3 @@ def stats():
         count = storage.count(key)
         all_obj[value] = count
     return jsonify(all_obj)
-

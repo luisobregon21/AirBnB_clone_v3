@@ -40,7 +40,7 @@ def all_cities(state_id):
 @app_views.route('/cities/<city_id>',
                  methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def city_by_id(city_id):
-    city = storage.get('city', city_id)
+    city = storage.get('City', city_id)
     if city is None:
         abort(404)
     if request.method == 'DELETE':

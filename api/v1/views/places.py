@@ -10,18 +10,22 @@ from models.place import Place
 
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
                  strict_slashes=False)
-def all_places(city_id):
+def all_places(city_id, user_id):
     city = storage.get('City', city_id)
-    if city is None:
+    user = storage.get('User', user_id)
+    if city is None or user is None:
         abort(404)
     if request.method == 'POST':
         new_place = None
         try:
             request_dict = request.get_json()
             place_name = request_dict.get('name')
+            place_user = request_dict.get('user_id')
             if place_name is None:
                 abort(400, description='Missing name')
-            new_place = Place(name=place_name, city_id=city_id)
+            if place_user is None:
+                abort(400, description='Missing user_id')
+            new_place = Place(name=place_name, city_id=city_id, user_id=user_id)
             new_place.save()
             return jsonify(new_place.to_dict()), 201
         except:
@@ -49,6 +53,8 @@ def place_by_id(place_id):
         try:
             request_dict = request.get_json()
             request_dict['id'] = place.id
+            request_dict['city_id'] = place.city_id
+            request_dict['user_id'] = place.user_id
             request_dict['created_at'] = place.created_at
             place.__init__(**request_dict)
             place.save()

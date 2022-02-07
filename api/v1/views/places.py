@@ -9,7 +9,7 @@ from models import storage
 from models.place import Place
 
 
-@app_views.route('cities/<city_id>/places', methods=['GET', 'POST'],
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
                  strict_slashes=False)
 def all_places(city_id):
     city = storage.get('City', city_id)
@@ -36,7 +36,7 @@ def all_places(city_id):
     return jsonify(place_list)
 
 
-@app_views.route('places/<place_id>',
+@app_views.route('/places/<place_id>',
                 methods=['GET', 'DELETE', 'PUT'],strict_slashes=False)
 def place_by_id(place_id):
     place = storage.get('Place', place_id)

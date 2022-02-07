@@ -10,7 +10,7 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.route('/api/v1/amenities', methods=['POST', 'GET'],
+@app_views.route('/amenities', methods=['POST', 'GET'],
                  strict_slashes=False)
 def all_Amenities():
     if request.method == 'POST':
@@ -35,7 +35,7 @@ def all_Amenities():
     return jsonify(amenity_list)
 
 
-@app_views.route('/api/v1/amenities/<amenity_id>',
+@app_views.route('/amenities/<amenity_id>',
                  methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def amenities_by_id(amenity_id):
     amenity = storage.get('Amenity', amenity_id)

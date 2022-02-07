@@ -5,7 +5,6 @@ Amenity objects that handles all default RESTFul API actions
 
 
 from flask import jsonify, request, abort
-from AirBnB_clone_v3.models import amenity
 from api.v1.views import app_views
 from models import storage
 from models.amenity import Amenity
@@ -13,7 +12,7 @@ from models.amenity import Amenity
 
 @app_views.route('/api/v1/amenities', methods=['POST', 'GET'],
                  strict_slashes=False)
-def all_States():
+def all_Amenities():
     if request.method == 'POST':
         new_amenity = None
         try:
@@ -38,7 +37,7 @@ def all_States():
 
 @app_views.route('/api/v1/amenities/<amenity_id>',
                  methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
-def state_by_id(amenity_id):
+def amenities_by_id(amenity_id):
     amenity = storage.get('Amenity', amenity_id)
     if amenity is None:
         abort(404)

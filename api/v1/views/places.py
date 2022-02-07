@@ -25,7 +25,8 @@ def all_places(city_id, user_id):
                 abort(400, description='Missing name')
             if place_user is None:
                 abort(400, description='Missing user_id')
-            new_place = Place(name=place_name, city_id=city_id, user_id=user_id)
+            new_place = Place(name=place_name, city_id=city_id,
+                              user_id=user_id)
             new_place.save()
             return jsonify(new_place.to_dict()), 201
         except:

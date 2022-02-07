@@ -2,8 +2,7 @@
 '''Places objects handles all default RESTful API actions'''
 
 
-from flask import jsonify, request, abort, request_finished
-from AirBnB_clone_v3.models import city
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models import storage
 from models.place import Place
@@ -28,16 +27,16 @@ def all_places(city_id):
         except:
             abort(400, description='Not a JSON')
 
-    #Retrieving all place objects
+#    Retrieving all place objects
     place_list = []
     for places in city:
         place_list.append(places.to_dict())
-    #Returns all places in a list
+#    Returns all places in a list
     return jsonify(place_list)
 
 
 @app_views.route('/places/<place_id>',
-                methods=['GET', 'DELETE', 'PUT'],strict_slashes=False)
+                 methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def place_by_id(place_id):
     place = storage.get('Place', place_id)
     if place is None:
@@ -50,8 +49,6 @@ def place_by_id(place_id):
         try:
             request_dict = request.get_json()
             request_dict['id'] = place.id
-            request_dict['user_id'] = place.user_id
-            request_dict['city_id'] = place.city_id
             request_dict['created_at'] = place.created_at
             place.__init__(**request_dict)
             place.save()

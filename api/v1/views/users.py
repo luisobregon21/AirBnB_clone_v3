@@ -22,6 +22,7 @@ def all_users():
             user_pw = request_dict.get('password')
             if user_pw is None:
                 abort(400, description='Missing password')
+            new_user = User(email=user_email, password=user_pw)
             new_user.save()
             return jsonify(new_user.to_dict()), 201
         except:

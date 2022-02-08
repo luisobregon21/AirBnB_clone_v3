@@ -19,21 +19,12 @@ def all_places(city_id):
         user_id = None
         try:
             request_dict = request.get_json()
-<<<<<<< HEAD
-            user_id = request_dict.get('user_id')
-            if user_id is None:
-                abort(400, description='Missing user_id')
-            user = storage.get('User', request_dict['user_id'])
-            if user is None:
-                abort(404)
-=======
->>>>>>> 12c650c6afa2a57a23db74884da62c04bf9d32ca
             place_name = request_dict.get('name')
             user_id = request_dict.get('user_id')
         except:
             abort(400, description='Not a JSON')
         if place_name is None:
-                abort(400, description='Missing name')
+            abort(400, description='Missing name')
         if user_id is None:
             abort(400, description='Missing user_id')
         user = storage.get('User', user_id)

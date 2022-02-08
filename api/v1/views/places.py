@@ -35,11 +35,11 @@ def all_places(city_id):
         new_places.save()
         return jsonify(new_places.to_dict()), 201
 
-    all_places = storage.all('Place')
-    places_list = []
-    for places in all_places.values():
-        places_list.append(places.to_dict())
-    return jsonify(places_list)
+    place_list = []
+    for place in city.places:
+        place_list.append(place.to_dict())
+#    Returns all reviews in a list
+    return jsonify(place_list)
 
 
 @app_views.route('/places/<place_id>',

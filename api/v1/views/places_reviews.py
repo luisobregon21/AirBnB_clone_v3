@@ -8,7 +8,7 @@ from models import storage
 from models.review import Review
 
 
-@app_views.route('/cities/<place_id>/reviews', methods=['GET', 'POST'],
+@app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'],
                  strict_slashes=False)
 def all_reviews(place_id):
     place = storage.get('Place', place_id)

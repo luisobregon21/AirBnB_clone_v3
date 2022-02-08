@@ -37,7 +37,7 @@ def all_reviews(place_id):
 
 #    Retrieving all review objects
     review_list = []
-    for reviews in place.review:
+    for reviews in place.reviews:
         review_list.append(reviews.to_dict())
 #    Returns all reviews in a list
     return jsonify(review_list)

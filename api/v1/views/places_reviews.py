@@ -56,9 +56,12 @@ def review_by_id(review_id):
         try:
             request_dict = request.get_json()
             request_dict['id'] = review.id
-            request_dict['place_id'] = review.place_id
             request_dict['created_at'] = review.created_at
-            request_dict['user_id'] = review.user_id
+            try:
+                request_dict.pop('user_id', None)
+                request_dict.pop('place_id', None)
+            except:
+                pass
             review.__init__(**request_dict)
             review.save()
             return jsonify(review.to_dict()), 200

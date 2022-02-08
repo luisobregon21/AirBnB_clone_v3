@@ -15,30 +15,40 @@ def all_places(city_id):
     if city is None:
         abort(404)
     if request.method == 'POST':
-        new_places = None
+        place_name = None
+        user_id = None
         try:
             request_dict = request.get_json()
+<<<<<<< HEAD
             user_id = request_dict.get('user_id')
             if user_id is None:
                 abort(400, description='Missing user_id')
             user = storage.get('User', request_dict['user_id'])
             if user is None:
                 abort(404)
+=======
+>>>>>>> 12c650c6afa2a57a23db74884da62c04bf9d32ca
             place_name = request_dict.get('name')
-            if place_name is None:
-                abort(400, 'Missing name')
-            new_places = Place(user_id=user_id, city_id=city_id,
-                               name=place_name)
-            new_places.save()
-            return jsonify(new_places.to_dict()), 201
+            user_id = request_dict.get('user_id')
         except:
             abort(400, description='Not a JSON')
+        if place_name is None:
+                abort(400, description='Missing name')
+        if user_id is None:
+            abort(400, description='Missing user_id')
+        user = storage.get('User', user_id)
+        if user is None:
+            abort(404)
+        new_places = Place(name=place_name, user_id=user_id,
+                           city_id=city_id)
+        new_places.save()
+        return jsonify(new_places.to_dict()), 201
 
-    all_places = storage.all('Place')
-    places_list = []
-    for places in all_places.values():
-        places_list.append(places.to_dict())
-    return jsonify(places_list)
+    place_list = []
+    for place in city.places:
+        place_list.append(place.to_dict())
+#    Returns all reviews in a list
+    return jsonify(place_list)
 
 
 @app_views.route('/places/<place_id>',

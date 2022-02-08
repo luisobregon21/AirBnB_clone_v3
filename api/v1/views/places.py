@@ -31,9 +31,10 @@ def all_places(city_id):
         except:
             abort(400, description='Not a JSON')
 
+    all_places = storage.all('Place')
     places_list = []
-    for places in city:
-        places_list.append(city.to_dict())
+    for places in all_places.values():
+        places_list.append(places.to_dict())
     return jsonify(places_list)
 
 

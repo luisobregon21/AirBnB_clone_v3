@@ -21,7 +21,7 @@ def all_places(city_id):
             user_id = request_dict.get('user_id')
             if user_id is None:
                 abort(400, description='Missing user_id')
-            user = storage.get('User', user_id)
+            user = storage.get('User', request_dict['user_id'])
             if user is None:
                 abort(404)
             place_name = request_dict.get('name')

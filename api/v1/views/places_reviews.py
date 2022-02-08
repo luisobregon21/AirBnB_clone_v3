@@ -16,9 +16,10 @@ def all_reviews(place_id):
         abort(404)
     if request.method == 'POST':
         new_review = None
+        request_dict = None
         try:
             request_dict = request.get_json()
-            review_txt = request_dict.get('text')
+            new_review = request_dict.get('text')
             if review_txt is None:
                 abort(400, description='Missing txt')
         except:
@@ -29,8 +30,8 @@ def all_reviews(place_id):
         user = storage.get('User', review_user)
         if user is None:
             abort(404)
-        new_review = Review(name=review_txt, place_id=place_id,
-                          user_id=review_user)
+        new_review = Review(text=new_review, place_id=place_id,
+                            user_id=review_user)
         new_review.save()
         return jsonify(new_review.to_dict()), 201
 

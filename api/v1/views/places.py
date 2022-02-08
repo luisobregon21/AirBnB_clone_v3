@@ -24,7 +24,8 @@ def all_places(city_id):
             place_name = request_dict.get('name')
             if place_name is None:
                 abort(400, 'Missing name')
-            new_places = Place(user_id=user_id, city_id=city_id, name=place_name)
+            new_places = Place(user_id=user_id, city_id=city_id,
+                               name=place_name)
             new_places.save()
             return jsonify(new_places.to_dict()), 201
         except:
@@ -59,4 +60,4 @@ def place_by_id(place_id):
             return jsonify(place.to_dict())
         except:
             abort(400, description='Not a JSON')
-    return jsonify(place.to_dict)
+    return jsonify(place.to_dict())

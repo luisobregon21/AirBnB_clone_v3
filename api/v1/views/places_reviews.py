@@ -20,8 +20,6 @@ def all_reviews(place_id):
         try:
             request_dict = request.get_json()
             new_review = request_dict.get('text')
-            if new_review is None:
-                abort(400, description='Missing txt')
         except:
             abort(400, description='Not a JSON')
         review_user = request_dict.get('user_id')
@@ -30,10 +28,12 @@ def all_reviews(place_id):
         user = storage.get('User', review_user)
         if user is None:
             abort(404)
-        new_review = Review(text=new_review, place_id=place_id,
+        if new_review is None:
+            abort(400, description='Missing txt')
+        the_review = Review(text=new_review, place_id=place_id,
                             user_id=review_user)
-        new_review.save()
-        return jsonify(new_review.to_dict()), 201
+        the_review.save()
+        return jsonify(the_review.to_dict()), 201
 
 #    Retrieving all review objects
     review_list = []

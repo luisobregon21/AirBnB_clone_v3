@@ -15,25 +15,26 @@ def all_places(city_id):
     if city is None:
         abort(404)
     if request.method == 'POST':
-        new_places = None
-        request_dict = None
+        place_name = None
+        user_id = None
         try:
             request_dict = request.get_json()
             place_name = request_dict.get('name')
-            if place_name is None:
-                abort(400, 'Missing name')
             user_id = request_dict.get('user_id')
-            if user_id is None:
-                abort(400, description='Missing user_id')
-            user = storage.get('User', user_id)
-            if user is None:
-                abort(404)
-            new_places = Place(user_id=user_id, city_id=city_id,
-                               name=place_name)
-            new_places.save()
-            return jsonify(new_places.to_dict()), 201
         except:
             abort(400, description='Not a JSON')
+        if place_name is None:
+                abort(400, description='Missing name')
+        if user_id is None:
+            abort(400, description='Missing user_id')
+        user = storage.get('User', user_id)
+        if user is None:
+            abort(404)
+        new_places = Place(user_id=user_id, city_id=city_id,
+                           name=place_name)
+        new_places.save()
+        return jsonify(new_places.to_dict()), 201
+
 
     all_places = storage.all('Place')
     places_list = []
@@ -56,7 +57,10 @@ def place_by_id(place_id):
         try:
             request_dict = request.get_json()
             request_dict['id'] = place.id
+            request_dict['user_id'] = place.user_id
+            request_dict['city_id'] = place.city_id
             request_dict['created_at'] = place.created_at
+            request_dict['updated_at'] = place.updated_at
             place.__init__(**request_dict)
             place.save()
             return jsonify(place.to_dict())

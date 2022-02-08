@@ -8,36 +8,32 @@ from models import storage
 from models.place import Place
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'],
-                 strict_slashes=False)
-def all_places(city_id, user_id):
+@app_views.route('/cities/<city_id>/places',
+                 methods=['GET', 'POST'], strict_slashes=False)
+def all_places(city_id):
     city = storage.get('City', city_id)
-    user = storage.get('User', user_id)
-    if city is None or user is None:
+    if city is None:
         abort(404)
     if request.method == 'POST':
-        new_place = None
+        new_places = None
         try:
             request_dict = request.get_json()
-            place_name = request_dict.get('name')
-            place_user = request_dict.get('user_id')
-            if place_name is None:
-                abort(400, description='Missing name')
-            if place_user is None:
+            user_id = request_dict.get('user_id')
+            if user_id is None:
                 abort(400, description='Missing user_id')
-            new_place = Place(name=place_name, city_id=city_id,
-                              user_id=user_id)
-            new_place.save()
-            return jsonify(new_place.to_dict()), 201
+            place_name = request_dict.get('name')
+            if place_name is None:
+                abort(400, 'Missing name')
+            new_places = Place(user_id=user_id, city_id=city_id, name=place_name)
+            new_places.save()
+            return jsonify(new_places.to_dict()), 201
         except:
             abort(400, description='Not a JSON')
 
-#    Retrieving all place objects
-    place_list = []
+    places_list = []
     for places in city:
-        place_list.append(places.to_dict())
-#    Returns all places in a list
-    return jsonify(place_list)
+        places_list.append(city.to_dict())
+    return jsonify(places_list)
 
 
 @app_views.route('/places/<place_id>',
@@ -54,12 +50,13 @@ def place_by_id(place_id):
         try:
             request_dict = request.get_json()
             request_dict['id'] = place.id
-            request_dict['city_id'] = place.city_id
             request_dict['user_id'] = place.user_id
+            request_dict['city_id'] = place.city_id
             request_dict['created_at'] = place.created_at
+            request_dict['updated_at'] = place.updated_at
             place.__init__(**request_dict)
             place.save()
-            return jsonify(place.to_dict()), 200
+            return jsonify(place.to_dict())
         except:
             abort(400, description='Not a JSON')
     return jsonify(place.to_dict)

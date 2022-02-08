@@ -20,7 +20,7 @@ def all_reviews(place_id):
         try:
             request_dict = request.get_json()
             new_review = request_dict.get('text')
-            if review_txt is None:
+            if new_review is None:
                 abort(400, description='Missing txt')
         except:
             abort(400, description='Not a JSON')
